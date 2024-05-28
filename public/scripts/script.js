@@ -72,3 +72,26 @@ async function loadCategoriesBlock() {
   await addCategoryFormListeners();
   await addDeleteCategoryListeners();
 }
+
+function validateGameForm(form) {
+  const title = form.querySelector('input[name="title"]').value.trim();
+  const description = form.querySelector('textarea[name="description"]').value.trim();
+  const developer = form.querySelector('input[name="developer"]').value.trim();
+  const image = form.querySelector('input[name="image"]').value.trim();
+  const link = form.querySelector('input[name="link"]').value.trim();
+
+  if (!title || !description || !developer || !image || !link) {
+    alert("Все поля должны быть заполнены");
+    return false;
+  }
+  return true;
+}
+
+function addGameFormListeners() {
+  const form = document.querySelector('.form--game');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (validateGameForm(form)) {
+    }
+  });
+}
