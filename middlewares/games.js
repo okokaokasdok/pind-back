@@ -2,9 +2,7 @@ const games = require("../models/game");
 
 const findAllGames = async (req, res, next) => {
   if (req.query["categories.name"]) {
-    req.gamesArray = await games.findGameByCategory(
-      req.query["categories.name"]
-    );
+    req.gamesArray = await games.findGameByCategory(req.query["categories.name"]);
     next();
     return;
   }
@@ -53,7 +51,7 @@ const createGame = async (req, res, next) => {
 const updateGame = async (req, res, next) => {
   console.log("PUT /games");
   try {
-    req.game = await games.findByIdAndUpdate(req.params.id, req.body);
+    req.game = await games.findByIdAndUpdate(req.params.id, req.body, { new: true });
     next();
   } catch (error) {
     res.setHeader("Content-Type", "application/json");
@@ -68,7 +66,7 @@ const deleteGame = async (req, res, next) => {
     req.game = await games.findByIdAndDelete(req.params.id);
     next();
   } catch (error) {
-    res.setHeader("Content-Type", "application/json");
+   res.setHeader("Content-Type", "application/json");
     res.status(400).send(JSON.stringify({ message: "Ошибка удаления игры" }));
   }
 };
@@ -78,13 +76,7 @@ const checkEmptyFields = async (req, res, next) => {
     next();
     return;
   } 
-  if (
-    !req.body.title ||
-    !req.body.description ||
-    !req.body.image ||
-    !req.body.link ||
-    !req.body.developer
-  ) {
+  if (!req.body.title || !req.body.description || !req.body.image || !req.body.link || !req.body.developer) {
     res.setHeader("Content-Type", "application/json");
     res.status(400).send(JSON.stringify({ message: "Заполни все поля" }));
   } else {
@@ -130,7 +122,7 @@ const checkIsGameExists = async (req, res, next) => {
   const isInArray = req.gamesArray.find((game) => {
     return req.body.title === game.title;
   });
-  if (isInArray) {
+  if (isInAttribute) {
     res.setHeader("Content-Type", "application/json");
     res
       .status(400)
@@ -141,6 +133,7 @@ const checkIsGameExists = async (req, res, next) => {
     next();
   }
 };
+
 module.exports = {
   findAllGames,
   createGame,
